@@ -38,26 +38,6 @@ router.get("/view/:docId", (req, res) => {
   });
 });
 
-// router.get("/user/:userId", (req, res) => {
-//   req.app.locals.con.connect((err) => {
-//     if (err) {
-//       console.log(err);
-//     }
-
-//     let userId = req.params.userId;
-
-//     let sql = `SELECT * FROM notes WHERE userId ="${userId}"`;
-
-//     req.app.locals.con.query(sql, (err, result) => {
-//       for (user in result) {
-//         if (userId == result[user].userId) {
-//           res.json(result);
-//         }
-//       }
-//     });
-//   });
-// });
-
 router.get("/:userId", function (req, res) {
   req.app.locals.con.connect(function (err) {
     if (err) {
