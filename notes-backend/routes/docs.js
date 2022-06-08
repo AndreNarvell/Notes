@@ -82,12 +82,56 @@ router.post("/new", (req) => {
     if (err) {
       console.log(err);
     }
-    let sql = `INSERT INTO notes (userId, title, context) VALUES ("${req.body.userId}", "${req.body.title}", "${req.body.context}")`;
+    let sql = `INSERT INTO notes (userId, title, context) VALUES ("${req.body.userId}", "${req.body.title}", '${req.body.context}')`;
 
     req.app.locals.con.query(sql, (err) => {
       if (err) {
         console.log(err);
       }
+    });
+  });
+});
+
+router.post("/delete", (req, res) => {
+  req.app.locals.con.connect((err) => {
+    if (err) {
+      console.log(err);
+    }
+
+    let docId = req.body.docId;
+    let sql = `DELETE FROM notes WHERE docId="${docId}"`;
+
+    req.app.locals.con.query(sql, (err, result) => {
+      if (err) {
+        console.log(err);
+      }
+
+      res.json("Document deleted");
+    });
+  });
+});
+
+router.post("/update", function (req, res) {
+  req.app.locals.con.connect((err) => {
+    if (err) {
+      console.log(err);
+    }
+
+    let sql = `
+          UPDATE notes
+          SET context = '${req.body.context}'
+          WHERE docId = '${req.body.docId}'
+      `;
+
+    req.app.locals.con.query(sql, function (err, result) {
+      if (err) {
+        console.log("Error", err);
+      }
+
+      console.log(req.body.context);
+      console.log(req.body.docId);
+
+      res.send("OK");
     });
   });
 });
