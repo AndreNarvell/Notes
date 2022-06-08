@@ -64,6 +64,12 @@ const Home: NextPage = () => {
     }
   }, [loggedIn]);
 
+  const handleDelDoc = (e: any) => {
+    axios.post("http://localhost:3000/docs/delete", { docId: e.target.id });
+
+    getDocs();
+  };
+
   let userNotes = docs.map((doc, i) => {
     return (
       <div
@@ -89,7 +95,11 @@ const Home: NextPage = () => {
             Edit
           </button>
         </Link> */}
-        <button className="h-6 px-5 m-2 text-sm font-small text-center text-gray-900 bg-white rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700">
+        <button
+          id={doc.docId.toString()}
+          onClick={handleDelDoc}
+          className="h-6 px-5 m-2 text-sm font-small text-center text-gray-900 bg-white rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700"
+        >
           Delete
         </button>
       </div>
@@ -103,6 +113,9 @@ const Home: NextPage = () => {
           <div className="md:w-8/12 lg:w-5/12 lg:ml-20">
             <form onSubmit={handleClick}>
               <div className="mb-6">
+                <h1 className="flex  flex-col items-center justify-center px-2 py-2 text-center mt-20 font-medium text-white text-xl">
+                  Please log in to view or create notes!
+                </h1>
                 <input
                   type="text"
                   className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
@@ -141,6 +154,9 @@ const Home: NextPage = () => {
       )}
       {loggedIn && (
         <div className="flex min-h-screen flex-col items-center justify-center py-2">
+          <div className=" w-1/2 flex flex-wrap -mb-4 items-center justify-center ">
+            {userNotes}
+          </div>
           <div className="md:w-8/12 lg:w-5/12  flex items-center justify-center flex-col ">
             <h1 className="flex  flex-col items-center justify-center px-2 py-2 text-center mt-20 font-medium text-white text-xl">
               Yes hello, here you can add a new note or edit your previous ones!
@@ -158,9 +174,6 @@ const Home: NextPage = () => {
             >
               Logout
             </button>
-          </div>
-          <div className=" w-1/2 flex flex-wrap -mb-4 items-center justify-center ">
-            {userNotes}
           </div>
         </div>
       )}

@@ -44,17 +44,19 @@ const createDoc: NextPage = () => {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
-      <h1>Tjena</h1>
-      <div className="md:w-8/12 lg:w-5/12 lg:ml-20">
+      <h1 className="mb-1 m-10 text-xl font-medium text-center text-gray-900 dark:text-white">
+        Add your note!
+      </h1>
+      <div className="md:w-8/12 lg:w-5/12  ">
         {success && (
-          <p className="flex  flex-col items-center justify-center py-2">
-            New note added! Niiiiice
+          <p className="flex text-white flex-col items-center justify-center py-2">
+            New note added! Niiice
           </p>
         )}
         <input
           name="title"
           type="text"
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className="mb-2 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           id="title"
           placeholder="Title"
           onChange={handleInput}
@@ -67,11 +69,6 @@ const createDoc: NextPage = () => {
           init={{
             height: 500,
             menubar: false,
-            // plugins: [
-            //   "advlist autolink lists link image charmap print preview anchor",
-            //   "searchreplace visualblocks code fullscreen",
-            //   "insertdatetime media table paste code help wordcount",
-            // ],
             toolbar:
               "undo redo | formatselect | " +
               "bold italic backcolor | alignleft aligncenter " +
@@ -85,13 +82,13 @@ const createDoc: NextPage = () => {
 
         <button
           onClick={handlePost}
-          className="inline-block px-7 py-3 mb-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
+          className=" my-2 mr-2 inline-flex items-center py-2 px-4 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Add document
         </button>
         <Link href={"/"}>
-          <button className="inline-block px-7 py-3 bg-red-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full">
-            go back
+          <button className="inline-flex px-7 py-2 font-medium text-sm text-gray-900 bg-white rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700">
+            Go back
           </button>
         </Link>
       </div>

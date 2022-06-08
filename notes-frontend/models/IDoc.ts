@@ -3,4 +3,6 @@ export interface IDoc {
   userId: number;
   title: string;
   context: string;
+  created: Date;
+  lastChanged: Date;
 }

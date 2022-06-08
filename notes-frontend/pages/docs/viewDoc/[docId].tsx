@@ -10,18 +10,17 @@ const viewDoc: NextPage = () => {
   router.query;
   const editorRef: any = useRef(null);
 
-  // const [title, setTitle] = useState("");
-  const [text, setText] = useState("");
-  const [title, setTitle] = useState("");
-
+  const [success, setSuccess] = useState(false);
   const [edit, setEdit] = useState(false);
+
   const lsUser =
     typeof window !== "undefined" ? localStorage.getItem("user") : null;
 
-  const [newDoc, setNewDoc] = useState({
+  const [newDoc, setNewDoc] = useState<any>({
+    docId: 0,
     userId: lsUser,
-    title: "",
     context: "",
+    created: "",
   });
 
   const handleEditor = (e: any) => {
@@ -32,14 +31,27 @@ const viewDoc: NextPage = () => {
     setEdit(!edit);
   };
 
+  const handleChangeDoc = () => {
+    axios.post("http://localhost:3000/docs/update", newDoc);
+    setSuccess(true);
+    setTimeout(() => {
+      setSuccess(false);
+    }, 2000);
+  };
+
   useEffect(() => {
     if (router.query.docId) {
       const data = axios
         .get(`http://localhost:3000/docs/view/${router.query.docId}`)
         .then((res) => {
           console.log(res.data);
-          setText(res.data.context);
-          setTitle(res.data.title);
+          setNewDoc({
+            ...newDoc,
+            docId: router.query.docId,
+            context: res.data.context,
+            title: res.data.title,
+            created: res.data.created,
+          });
         });
     }
   }, [router]);
@@ -52,12 +64,18 @@ const viewDoc: NextPage = () => {
             <div className="flex justify-end px-4 pt-4"></div>
             <div className="flex flex-col items-center pb-10">
               <h5 className="mb-1 m-10 text-xl font-medium text-gray-900 dark:text-white">
-                {title}
+                {newDoc.title}
               </h5>
-              <span className="text-sm text-gray-500 dark:text-gray-400 px-5">
-                {text}
+              <span
+                dangerouslySetInnerHTML={{ __html: newDoc.context }}
+                className="text-sm text-gray-500 dark:text-gray-400 px-5"
+              >
+                {/* {text} */}
               </span>
-              <div className="flex mt-4 space-x-3 lg:mt-6 px-10">
+              <span className="text-gray-600 text-sm mt-4">
+                Created: {newDoc.created}
+              </span>
+              <div className="flex mt-2 space-x-3 lg:mt-6 px-10">
                 <button
                   onClick={handleEditView}
                   className="inline-flex items-center py-2 px-4 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -73,39 +91,20 @@ const viewDoc: NextPage = () => {
             </div>
           </div>
         </div>
-
-        // <div className="flex min-h-screen flex-col items-center text-center justify-center px-20">
-        //   <h1>här e view</h1>
-        //   <p> {text} </p>
-        //   <button
-        //     onClick={handleEditView}
-        //     className="inline-flex items-center py-2 px-4 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        //   >
-        //     Edit
-        //   </button>
-        // <Link href={"/"}>
-        //   <button className="inline-flex items-center py-2 px-4 text-sm font-medium text-center text-gray-900 bg-white rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700">
-        //     Go back
-        //   </button>
-        // </Link>
-        // </div>
       )}
       {edit && (
         <div className="flex min-h-screen flex-col items-center justify-center py-2">
-          <h1>Här är edit</h1>
+          <h1 className="mb-1 m-10 text-xl font-medium text-gray-900 dark:text-white">
+            Edit your note
+          </h1>
           <Editor
             apiKey="t33midtt5o5z427nscmgzaeomfn0p6wypcipk0wnhta1st0v"
             id="textEditor"
             onInit={(evt, editor) => (editorRef.current = editor)}
-            initialValue={text}
+            value={newDoc.context}
             init={{
               height: 500,
               menubar: false,
-              // plugins: [
-              //   "advlist autolink lists link image charmap print preview anchor",
-              //   "searchreplace visualblocks code fullscreen",
-              //   "insertdatetime media table paste code help wordcount",
-              // ],
               toolbar:
                 "undo redo | formatselect | " +
                 "bold italic backcolor | alignleft aligncenter " +
@@ -116,17 +115,26 @@ const viewDoc: NextPage = () => {
             }}
             onEditorChange={handleEditor}
           />
-          <button className="h-6 px-5 m-2 text-white transition-colors duration-150 bg-blue-600 rounded-lg focus:shadow-outline hover:bg-blue-700">
+          {success && (
+            <p className="flex text-white flex-col items-center justify-center py-2">
+              Note updated!
+            </p>
+          )}
+
+          <button
+            onClick={handleChangeDoc}
+            className=" my-2 inline-flex items-center py-2 px-4 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
             Save changes
           </button>
 
-          <button className="h-6 px-5 m-2 text-white transition-colors duration-150 bg-red-600 rounded-lg focus:shadow-outline hover:bg-red-700">
+          {/* <button className="h-6 px-5 m-2 text-white transition-colors duration-150 bg-red-600 rounded-lg focus:shadow-outline hover:bg-red-700">
             Delete
-          </button>
+          </button> */}
 
           <button
             onClick={handleEditView}
-            className="h-6 px-5 m-2 text-white transition-colors duration-150 bg-green-500 rounded-lg focus:shadow-outline hover:bg-green-600"
+            className="inline-block px-7 py-2 font-medium text-gray-900 bg-white rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700"
           >
             Go back
           </button>
