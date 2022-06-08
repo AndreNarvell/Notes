@@ -81,8 +81,6 @@ const Home: NextPage = () => {
           <div className="font-medium text-xl mb-2 text-white ">
             {doc.title}
           </div>
-
-          {/* <p className="text-gray-700 text-base">{doc.context}</p> */}
         </div>
         <Link href={`/docs/viewDoc/${doc.docId}`}>
           <button className="h-6 px-5 m-2 text-sm font-small text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -90,11 +88,6 @@ const Home: NextPage = () => {
           </button>
         </Link>
 
-        {/* <Link href={"/editDoc"}>
-          <button className="h-6 px-5 m-2 text-blue-100 transition-colors duration-150 bg-blue-600 rounded-lg focus:shadow-outline hover:bg-blue-700">
-            Edit
-          </button>
-        </Link> */}
         <button
           id={doc.docId.toString()}
           onClick={handleDelDoc}
@@ -154,7 +147,7 @@ const Home: NextPage = () => {
       )}
       {loggedIn && (
         <div className="flex min-h-screen flex-col items-center justify-center py-2">
-          <div className=" w-1/2 flex flex-wrap -mb-4 items-center justify-center ">
+          <div className=" sm:w-screen  lg:w-1/2 flex flex-wrap -mb-4 items-center justify-center ">
             {userNotes}
           </div>
           <div className="md:w-8/12 lg:w-5/12  flex items-center justify-center flex-col ">

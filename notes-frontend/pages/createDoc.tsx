@@ -43,11 +43,11 @@ const createDoc: NextPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-2">
+    <div className=" flex min-h-screen flex-col items-center justify-center py-2">
       <h1 className="mb-1 m-10 text-xl font-medium text-center text-gray-900 dark:text-white">
         Add your note!
       </h1>
-      <div className="md:w-8/12 lg:w-5/12  ">
+      <div className="md:w-5/12 lg:w-5/12 sm:w-5/12">
         {success && (
           <p className="flex text-white flex-col items-center justify-center py-2">
             New note added! Niiice
