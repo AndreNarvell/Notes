@@ -1,4 +1,4 @@
-# Nyhetsbrev-Frontend
+# Notes
 
 #### School assignment where users can log in to view and edit notes they have created, basically a bulletin board.
 ---
