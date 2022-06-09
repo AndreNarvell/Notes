@@ -18,6 +18,8 @@ npm run dev
 ---
 
 ### Run backend:
+Open MAMP and import usernotes.sql and start server
+
 npm i
 
 nodemon start
