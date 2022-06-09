@@ -18,7 +18,7 @@ npm run dev
 ---
 
 ### Run backend:
-Open MAMP and import usernotes.sql and start server
+Open MAMP and import usernotes.sql and start server on port 3306
 
 npm i
 
