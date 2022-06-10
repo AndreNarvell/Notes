@@ -1,30 +1,28 @@
 import { Editor } from "@tinymce/tinymce-react";
 import axios from "axios";
-import type { NextPage, NextPageContext } from "next";
+import type { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import parse from "html-react-parser";
+import { IDoc } from "../../../models/IDoc";
 
 const viewDoc: NextPage = () => {
   const router = useRouter();
-  router.query;
-  const editorRef: any = useRef(null);
+  const { docId } = router.query;
 
   const [success, setSuccess] = useState(false);
   const [edit, setEdit] = useState(false);
 
-  const lsUser =
-    typeof window !== "undefined" ? localStorage.getItem("user") : null;
-
-  const [newDoc, setNewDoc] = useState<any>({
+  const [newDoc, setNewDoc] = useState<IDoc>({
     docId: 0,
-    userId: lsUser,
+    userId: 0,
     context: "",
-    created: "",
+    created: new Date(),
   });
 
-  const handleEditor = (e: any) => {
-    setNewDoc({ ...newDoc, context: e });
+  const handleEditor = (a: string) => {
+    setNewDoc({ ...newDoc, context: a });
   };
 
   const handleEditView = () => {
@@ -40,17 +38,22 @@ const viewDoc: NextPage = () => {
   };
 
   useEffect(() => {
-    if (router.query.docId) {
+    if (docId && typeof docId === "string") {
       const data = axios
-        .get(`http://localhost:3000/docs/view/${router.query.docId}`)
+        .get(`http://localhost:3000/docs/view/${docId}`)
         .then((res) => {
           console.log(res.data);
+          const lsUser =
+            typeof window !== "undefined"
+              ? (JSON.parse(localStorage.getItem("user")!) as number)
+              : null;
           setNewDoc({
             ...newDoc,
-            docId: router.query.docId,
+            userId: lsUser!,
+            docId: parseInt(docId),
             context: res.data.context,
             title: res.data.title,
-            created: res.data.created,
+            created: new Date(res.data.created),
           });
         });
     }
@@ -58,7 +61,7 @@ const viewDoc: NextPage = () => {
 
   return (
     <>
-      {!edit && (
+      {!edit ? (
         <div className="flex h-screen items-center justify-center">
           <div className="max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 ">
             <div className="flex justify-end px-4 pt-4"></div>
@@ -66,14 +69,11 @@ const viewDoc: NextPage = () => {
               <h5 className="mb-1 m-10 text-xl font-medium text-gray-900 dark:text-white">
                 {newDoc.title}
               </h5>
-              <span
-                dangerouslySetInnerHTML={{ __html: newDoc.context }}
-                className="text-sm text-gray-500 dark:text-gray-400 px-5"
-              >
-                {/* {text} */}
+              <span className="text-sm text-gray-500 dark:text-gray-400 px-5">
+                {parse(newDoc.context)}
               </span>
               <span className="text-gray-600 text-sm mt-4">
-                Created: {newDoc.created}
+                Created: {newDoc.created.toLocaleString()}
               </span>
               <div className="flex mt-2 space-x-3 lg:mt-6 px-10">
                 <button
@@ -91,8 +91,7 @@ const viewDoc: NextPage = () => {
             </div>
           </div>
         </div>
-      )}
-      {edit && (
+      ) : (
         <div className="flex min-h-screen flex-col items-center justify-center py-2">
           <h1 className="mb-1 m-10 text-xl font-medium text-gray-900 dark:text-white">
             Edit your note
@@ -100,7 +99,6 @@ const viewDoc: NextPage = () => {
           <Editor
             apiKey="t33midtt5o5z427nscmgzaeomfn0p6wypcipk0wnhta1st0v"
             id="textEditor"
-            onInit={(evt, editor) => (editorRef.current = editor)}
             value={newDoc.context}
             init={{
               height: 500,
@@ -127,10 +125,6 @@ const viewDoc: NextPage = () => {
           >
             Save changes
           </button>
-
-          {/* <button className="h-6 px-5 m-2 text-white transition-colors duration-150 bg-red-600 rounded-lg focus:shadow-outline hover:bg-red-700">
-            Delete
-          </button> */}
 
           <button
             onClick={handleEditView}

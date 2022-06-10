@@ -1,8 +1,7 @@
-import { Editor } from "@tinymce/tinymce-react";
 import axios from "axios";
 import type { NextPage } from "next";
 import Link from "next/link";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import { IDoc } from "../models/IDoc";
 
 const Home: NextPage = () => {
@@ -45,8 +44,7 @@ const Home: NextPage = () => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const handleClick = (e: any) => {
-    e.preventDefault();
+  const handleClick = () => {
     login();
     console.log(user);
   };
@@ -64,8 +62,9 @@ const Home: NextPage = () => {
     }
   }, [loggedIn]);
 
-  const handleDelDoc = (e: any) => {
-    axios.post("http://localhost:3000/docs/delete", { docId: e.target.id });
+  const handleDelDoc = (e: MouseEvent<HTMLButtonElement>) => {
+    const target = e.target as HTMLButtonElement;
+    axios.post("http://localhost:3000/docs/delete", { docId: target.id });
 
     getDocs();
   };
@@ -150,7 +149,7 @@ const Home: NextPage = () => {
           <div className=" sm:w-screen  lg:w-1/2 flex flex-wrap -mb-4 items-center justify-center ">
             {userNotes}
           </div>
-          <div className="md:w-8/12 lg:w-5/12  flex items-center justify-center flex-col ">
+          <div className=" md:w-8/12 lg:w-5/12  flex items-center justify-center flex-col ">
             <h1 className="flex  flex-col items-center justify-center px-2 py-2 text-center mt-20 font-medium text-white text-xl">
               Yes hello, here you can add a new note or edit your previous ones!
             </h1>

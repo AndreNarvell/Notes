@@ -1,8 +1,8 @@
 export interface IDoc {
   docId: number;
   userId: number;
-  title: string;
+  title?: string;
   context: string;
   created: Date;
-  lastChanged: Date;
+  lastChanged?: Date;
 }

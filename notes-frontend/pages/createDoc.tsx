@@ -2,10 +2,10 @@ import { Editor } from "@tinymce/tinymce-react";
 import axios from "axios";
 import type { NextPage } from "next";
 import Link from "next/link";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 
 const createDoc: NextPage = () => {
-  const editorRef: any = useRef(null);
+  // const editorRef: any = useRef(null);
 
   const [success, setSuccess] = useState(false);
 
@@ -24,8 +24,8 @@ const createDoc: NextPage = () => {
     setNewDoc({ ...newDoc, [e.target.name]: e.target.value });
   };
 
-  const handleEditor = (e: any) => {
-    setNewDoc({ ...newDoc, context: e });
+  const handleEditor = (a: string) => {
+    setNewDoc({ ...newDoc, context: a });
   };
 
   const handlePost = () => {
@@ -64,7 +64,7 @@ const createDoc: NextPage = () => {
         <Editor
           apiKey="t33midtt5o5z427nscmgzaeomfn0p6wypcipk0wnhta1st0v"
           id="textEditor"
-          onInit={(evt, editor) => (editorRef.current = editor)}
+          // onInit={(evt, editor) => (editorRef.current = editor)}
           initialValue=""
           init={{
             height: 500,
