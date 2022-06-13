@@ -44,7 +44,8 @@ const Home: NextPage = () => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const handleClick = () => {
+  const handleClick = (e: any) => {
+    e.preventDefault();
     login();
     console.log(user);
   };
