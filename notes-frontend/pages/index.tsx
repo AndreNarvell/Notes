@@ -44,7 +44,7 @@ const Home: NextPage = () => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const handleClick = (e: any) => {
+  const handleClick = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     login();
     console.log(user);
